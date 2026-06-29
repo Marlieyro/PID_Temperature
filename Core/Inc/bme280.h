@@ -44,7 +44,6 @@
 #define BME280_VAL_SOFT_RESET (0xB6)
 
 
-// TODO додати зсуви
 // -------------- CTRL ----------------
 enum bme280_ctrl_meas_mode {
     SLEEP_MODE = 0x0,

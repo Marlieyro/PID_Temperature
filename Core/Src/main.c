@@ -31,6 +31,9 @@ int main(void){
   }
 }
 
+void App_RCC_Configuration() {
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+}
 
 void SystemClock_Config(void)
 {

@@ -5,8 +5,9 @@
 #include "main.h"
 #include "i2c.h"
 
+I2C_HandleTypeDef i2c_handle;
+
 void i2c_config(void) {
-    I2C_HandleTypeDef i2c_handle;
     i2c_handle.Instance = I2C2;
     i2c_handle.Init.ClockSpeed = 100000; // 100 000 hz standart mode
     // i2c_handle.Init.DutyCycle = I2C_DUTYCYCLE_2;
@@ -17,3 +18,14 @@ void i2c_config(void) {
         Error_Handler();
 }
 
+// Master Tx Transfer completed callback.
+__weak void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef *hi2c)
+{
+    // Коли буфер empty то викликається цей callback
+}
+
+// Master Rx Transfer completed callback.
+__weak void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef *hi2c)
+{
+    // Коли буфер empty для Recive
+}

@@ -7,11 +7,6 @@
 
 // I2C2_SCL - PB10
 // I2C2_SDA - PB11
-
-
-
-
-
-
+extern I2C_HandleTypeDef i2c_handle;
 
 #endif //PID_TEMPERATURE_I2C_H

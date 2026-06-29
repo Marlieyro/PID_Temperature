@@ -35,7 +35,9 @@ enable_language(C ASM)
 add_executable(${CMAKE_PROJECT_NAME}
         Core/Src/i2c.c
         Core/Inc/i2c.h
-        Core/Inc/bme280.h)
+        Core/Inc/bme280.h
+        Core/Src/pwm.c
+        Core/Inc/pwm.h)
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
