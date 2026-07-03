@@ -174,4 +174,8 @@ void TIM2_IRQHandler(void)
   HAL_TIM_IRQHandler(&tim2_ch2);
 }
 
+void ADC1_2_IRQHandler(void) {
+  HAL_ADC_IRQHandler(&adc1_config);
+}
+
 /* USER CODE END 1 */

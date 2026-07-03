@@ -83,3 +83,32 @@ void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef *htim)
 {
   // TODO
 }
+
+void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
+{
+  GPIO_InitTypeDef GPIO_Initure = {0};
+  if (hadc->Instance == ADC1) {
+    GPIO_Initure.Pin = GPIO_PIN_0;
+    GPIO_Initure.Mode = GPIO_MODE_ANALOG;
+    GPIO_Initure.Pull = GPIO_NOPULL;
+    GPIO_Initure.Speed = GPIO_SPEED_FREQ_HIGH;
+    HAL_GPIO_Init(GPIOA, &GPIO_Initure);
+  }
+}
+
+void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc) {
+  // TODO
+}
+
+void HAL_UART_MspInit(UART_HandleTypeDef* huart) {
+  // PA10 - RX
+  // PA9 - TX
+  GPIO_InitTypeDef GPIO_Initure = {0};
+  if (huart->Instance == USART1) {
+    GPIO_Initure.Pin =  GPIO_PIN_9 | GPIO_PIN_10;
+    GPIO_Initure.Mode = GPIO_MODE_AF_PP;
+    GPIO_Initure.Pull = GPIO_NOPULL;
+    GPIO_Initure.Speed = GPIO_SPEED_HIGH;
+    HAL_GPIO_Init(GPIOA, &GPIO_Initure);
+  }
+}

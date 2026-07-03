@@ -19,20 +19,33 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
+#include <string.h>
+
+volatile char msg[8] = "1234567";
+
 void SystemClock_Config(void);
 
 int main(void){
   HAL_Init();
   SystemClock_Config();
+  App_RCC_Configuration();
+  //HAL_ADC_Start_IT(&adc1_config);
+  UART1_Config();
 
 
   while (1){
-
+      HAL_UART_Transmit(&huart1, (uint8_t *)msg, 8, 1000);
+      HAL_Delay(1000);
   }
 }
 
 void App_RCC_Configuration() {
   __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_ADC1_CLK_ENABLE();
+  __HAL_RCC_USART1_CLK_ENABLE();
+  // Div clock for adc 16 / 8 = 2Mhz
+  __HAL_RCC_ADC_CONFIG(RCC_ADCPCLK2_DIV8);
 }
 
 void SystemClock_Config(void)

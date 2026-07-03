@@ -31,6 +31,8 @@ extern "C" {
 #include "stm32f1xx_hal_rcc.h"
 #include "i2c.h"
 #include "pwm.h"
+#include "adc1.h"
+#include "uart.h"
 
 // Налаштування тактування для усіх шин
 void App_RCC_Configuration(void);

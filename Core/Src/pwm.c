@@ -31,6 +31,7 @@ void pwm1_config() {
     HAL_NVIC_SetPriority(TIM2_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(TIM2_IRQn);
 
+    // TODO
     //HAL_TIM_PWM_Start_IT();
 }
 

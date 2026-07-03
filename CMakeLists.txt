@@ -37,7 +37,11 @@ add_executable(${CMAKE_PROJECT_NAME}
         Core/Inc/i2c.h
         Core/Inc/bme280.h
         Core/Src/pwm.c
-        Core/Inc/pwm.h)
+        Core/Inc/pwm.h
+        Core/Inc/adc1.h
+        Core/Src/adc1.c
+        Core/Inc/uart.h
+        Core/Src/uart.c)
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
