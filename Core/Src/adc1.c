@@ -16,7 +16,8 @@ void ADC1_Config(void) {
     adc1_config.Init.NbrOfConversion = 1;
     adc1_config.Init.ContinuousConvMode = DISABLE;
     adc1_config.Init.DiscontinuousConvMode = DISABLE;
-    adc1_config.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+    // Включаємо ADC раз на 100мс через TIMER event
+    adc1_config.Init.ExternalTrigConv = ADC_EXTERNALTRIGCONV_T3_TRGO;
 
    if ( HAL_ADC_Init(&adc1_config) != HAL_OK )
        Error_Handler();

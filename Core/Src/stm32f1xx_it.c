@@ -169,6 +169,7 @@ void I2C1_ER_IRQHandler(void) {
   HAL_I2C_ER_IRQHandler(&i2c_handle);
 }
 
+// PWM
 void TIM2_IRQHandler(void)
 {
   HAL_TIM_IRQHandler(&tim2_ch2);

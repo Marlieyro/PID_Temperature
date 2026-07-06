@@ -41,7 +41,9 @@ add_executable(${CMAKE_PROJECT_NAME}
         Core/Inc/adc1.h
         Core/Src/adc1.c
         Core/Inc/uart.h
-        Core/Src/uart.c)
+        Core/Src/uart.c
+        Core/Src/timer.c
+        Core/Src/timer.h)
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
