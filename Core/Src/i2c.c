@@ -2,13 +2,12 @@
 // Created by user on 25.06.26.
 //
 
-#include "main.h"
 #include "i2c.h"
 
 I2C_HandleTypeDef i2c_handle;
 
 void i2c_config(void) {
-    i2c_handle.Instance = I2C1;
+    i2c_handle.Instance = I2C2;
     i2c_handle.Init.ClockSpeed = 100000; // 100 000 hz standart mode
     // i2c_handle.Init.DutyCycle = I2C_DUTYCYCLE_2;
     i2c_handle.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;

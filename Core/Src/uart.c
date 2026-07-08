@@ -2,7 +2,7 @@
 // Created by user on 02.07.26.
 //
 
-#include "main.h"
+
 #include "uart.h"
 
 UART_HandleTypeDef huart1 = {0};

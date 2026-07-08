@@ -1,7 +1,7 @@
 //
 // Created by user on 29.06.26.
 //
-#include "main.h"
+
 #include "pwm.h"
 
 

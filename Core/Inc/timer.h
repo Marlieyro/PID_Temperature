@@ -5,7 +5,7 @@
 #ifndef PID_TEMPERATURE_TIMER_H
 #define PID_TEMPERATURE_TIMER_H
 
-#include "stm32f1xx_hal_tim.h"
+#include "stm32f1xx_hal.h"
 #include "main.h"
 
 extern TIM_HandleTypeDef htim3;

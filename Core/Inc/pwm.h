@@ -4,6 +4,8 @@
 
 #ifndef PID_TEMPERATURE_PWM_H
 #define PID_TEMPERATURE_PWM_H
+
+#include "main.h"
 #include "stm32f1xx_hal_tim.h"
 
 // Servo - MG995 High Speed 360

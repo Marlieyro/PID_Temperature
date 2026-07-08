@@ -5,7 +5,8 @@
 #ifndef PID_TEMPERATURE_UART_H
 #define PID_TEMPERATURE_UART_H
 
-#include "stm32f1xx_hal_uart.h"
+#include "stm32f1xx_hal.h"
+#include "main.h"
 
 extern UART_HandleTypeDef huart1;
 void UART1_Config(void);

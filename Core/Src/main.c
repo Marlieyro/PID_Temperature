@@ -19,24 +19,35 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
+#include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 
-volatile char msg[8] = "1234567";
+char word[] = "BME_280 id: ";
+
+char msg[30];
+char eow[] = "\r\n";
 
 void SystemClock_Config(void);
 
-int main(void){
+int main(void)
+{
   HAL_Init();
   SystemClock_Config();
   App_RCC_Configuration();
-  //HAL_ADC_Start_IT(&adc1_config);
+  i2c_config();
   UART1_Config();
 
+  BME280_Init();
 
-  while (1){
-      HAL_UART_Transmit(&huart1, (uint8_t *)msg, 8, 1000);
-      HAL_Delay(1000);
+  snprintf(msg, sizeof(msg), "%s%d%s", word, BME280_GetID(), eow);
+
+  while (1)
+  {
+  HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg), 1000);
+  HAL_Delay(1000);
   }
+
 }
 
 void App_RCC_Configuration() {
@@ -44,6 +55,7 @@ void App_RCC_Configuration() {
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_ADC1_CLK_ENABLE();
   __HAL_RCC_USART1_CLK_ENABLE();
+  __HAL_RCC_I2C2_CLK_ENABLE();
   // Div clock for adc 16 / 8 = 2Mhz
   __HAL_RCC_ADC_CONFIG(RCC_ADCPCLK2_DIV8);
 }
@@ -53,6 +65,9 @@ void SystemClock_Config(void)
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
+  */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
@@ -62,7 +77,8 @@ void SystemClock_Config(void)
     Error_Handler();
   }
 
-
+  /** Initializes the CPU, AHB and APB buses clocks
+  */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
@@ -82,6 +98,7 @@ void Error_Handler(void)
   __disable_irq();
   while (1)
   {
+    HAL_UART_Transmit(&huart1, (uint8_t*)"Error\r\n", strlen("Error\r\n"), 100);
   }
 
 }
