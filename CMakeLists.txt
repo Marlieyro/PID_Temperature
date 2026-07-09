@@ -49,6 +49,8 @@ add_executable(${CMAKE_PROJECT_NAME}
         Core/Inc/bme280_defs.h
         Core/Inc/bme280_exclude.h
         Core/Src/bme280_exclude.c
+        Core/Src/bme280_conf.c
+        Core/Inc/bme280_conf.h
 )
 
 # Add STM32CubeMX generated sources

@@ -169,7 +169,7 @@ int8_t bme280_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, struct
  *@verbatim
  * Macros                 |   Functionality
  * -----------------------|----------------------------------------------
- * BME280_SEL_OSR_PRESS   |   To set pressure oversampling.
+  * BME280_SEL_OSR_PRESS   |   To set pressure oversampling.
  * BME280_SEL_OSR_TEMP    |   To set temperature oversampling.
  * BME280_SEL_OSR_HUM     |   To set humidity oversampling.
  * BME280_SEL_FILTER      |   To set filter setting.

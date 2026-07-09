@@ -23,7 +23,7 @@
 #include <stdio.h>
 #include <string.h>
 
-char word[] = "BME_280 id: ";
+char word[] = "Temp is: ";
 
 char msg[30];
 char eow[] = "\r\n";
@@ -38,12 +38,13 @@ int main(void)
   i2c_config();
   UART1_Config();
 
-  BME280_Init();
+  BME280_Init_Config();
 
-  snprintf(msg, sizeof(msg), "%s%d%s", word, BME280_GetID(), eow);
+  while (1) {
+    // Normal mode BME280 and Blocking reading
+  BME280_Fetch_Sensor_Data();
+  snprintf(msg, sizeof(msg), "%s%d%s", word, (int)get_ptr_BME280_Data_Struct()->temperature, eow);
 
-  while (1)
-  {
   HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg), 1000);
   HAL_Delay(1000);
   }

@@ -31,7 +31,15 @@ extern "C" {
 #include "pwm.h"
 #include "adc1.h"
 #include "uart.h"
-#include "bme280_exclude.h"
+
+#include "bme280_exclude.h" // REMOVE!!
+
+// BME Driver
+#include "bme280.h"
+#include "bme280_defs.h"
+
+// BME Lib
+#include "bme280_conf.h"
 
 void App_RCC_Configuration(void);
 
