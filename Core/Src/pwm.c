@@ -4,7 +4,6 @@
 
 #include "pwm.h"
 
-
 TIM_HandleTypeDef tim2_ch2;
 TIM_OC_InitTypeDef tim_oc_2;
 
@@ -26,18 +25,14 @@ void pwm1_config() {
     tim_oc_2.OCFastMode = TIM_OCFAST_DISABLE;
     if (HAL_TIM_PWM_ConfigChannel(&tim2_ch2, &tim_oc_2, TIM_CHANNEL_2) != HAL_OK)
         Error_Handler();
-
-    // TODO prio
-    HAL_NVIC_SetPriority(TIM2_IRQn, 0, 0);
-    HAL_NVIC_EnableIRQ(TIM2_IRQn);
-
-    // TODO
-    //HAL_TIM_PWM_Start_IT();
 }
 
-// TODO колбеки, треба понять який виокристовувати
-//HAL_TIM_PeriodElapsedCallback(htim);
-// HAL_TIM_OC_DelayElapsedCallback(htim);
-// HAL_TIM_PWM_PulseFinishedCallback(htim);
+TIM_HandleTypeDef* getPWM_HandleTypeDef() {
+    return &tim2_ch2;
+}
+
+uint32_t getPWM_Value() {
+    return __HAL_TIM_GET_COMPARE(&tim2_ch2, TIM_CHANNEL_2);
+}
 
 

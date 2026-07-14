@@ -24,7 +24,12 @@ void TIMER3_Config(void) {
     tim3_mstr.MasterOutputTrigger = TIM_TRGO_UPDATE;
     tim3_mstr.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
 
-    // Далі просто включаємо Start_IT і по перериванню таймера це буде працювати
     if (HAL_TIMEx_MasterConfigSynchronization(&tim3, &tim3_mstr) != HAL_OK)
         Error_Handler();
+
+    HAL_TIM_Base_Start_IT(&tim3);
+}
+
+TIM_HandleTypeDef* getTIMER3_HandleTypeDef() {
+    return &tim3;
 }

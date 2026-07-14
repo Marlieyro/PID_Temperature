@@ -21,6 +21,10 @@ struct bme280_data* BME280_Fetch_and_Get_Data() {
     else return NULL;
 }
 
+int32_t BME280_Get_Temperature() {
+    return get_ptr_BME280_Data_Struct()->temperature;
+}
+
 // Only for Temperature
 int8_t BME280_Init_Config() {
     //Init sensor

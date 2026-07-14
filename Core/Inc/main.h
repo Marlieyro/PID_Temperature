@@ -26,13 +26,13 @@
 extern "C" {
 #endif
 
+// Pheriheri
 #include "stm32f1xx_hal.h"
 #include "i2c.h"
 #include "pwm.h"
 #include "adc1.h"
 #include "uart.h"
-
-#include "bme280_exclude.h" // REMOVE!!
+#include "timer.h"
 
 // BME Driver
 #include "bme280.h"
@@ -41,9 +41,22 @@ extern "C" {
 // BME Lib
 #include "bme280_conf.h"
 
-void App_RCC_Configuration(void);
+// PID logic
+#include "pid.h"
 
+// Variables
+
+
+// Config
+void SystemClock_Config(void);
+void App_RCC_Configuration(void);
 void Error_Handler(void);
+
+// System flow
+void Config_System_And_Periphery();
+void PWM_Start();
+void ADC_Start_IT();
+void System_Flow();
 
 #ifdef __cplusplus
 }

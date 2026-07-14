@@ -51,17 +51,9 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef *hi2c){
   GPIO_Initure.Pin = GPIO_PIN_10 | GPIO_PIN_11; // SDA = 11, SCL = 10
   GPIO_Initure.Mode = GPIO_MODE_AF_OD;
   GPIO_Initure.Pull = GPIO_PULLUP;
-  // TODO не high швидкість
   GPIO_Initure.Speed = GPIO_SPEED_HIGH;
 
   HAL_GPIO_Init(GPIOB, &GPIO_Initure);
-
-  // TODO change priority
-  HAL_NVIC_SetPriority(I2C1_EV_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(I2C1_EV_IRQn);
-
-  HAL_NVIC_SetPriority(I2C1_ER_IRQn, 5, 0);
-  HAL_NVIC_EnableIRQ(I2C1_ER_IRQn);
 }
 
 void HAL_I2C_MspDeInit(I2C_HandleTypeDef *hi2c){

@@ -6,8 +6,9 @@
 
 ADC_HandleTypeDef adc1_config = {0};
 ADC_ChannelConfTypeDef adc1_channel_conf = {0};
-volatile uint16_t adc_read_val;
-volatile uint16_t adc_read_status = 0;
+
+volatile static uint32_t desire_tem_from_adc;
+volatile uint8_t irq_flag = 0;
 
 void ADC1_Config(void) {
     adc1_config.Instance = ADC1;
@@ -28,15 +29,32 @@ void ADC1_Config(void) {
     if ( HAL_ADC_ConfigChannel(&adc1_config, &adc1_channel_conf) != HAL_OK )
         Error_Handler();
 
-    // TODO priotiry
     HAL_NVIC_SetPriority(ADC1_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(ADC1_IRQn);
 }
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
     if (hadc->Instance == ADC1) {
-        // TODO логіка для EOC ADC
-        adc_read_val = HAL_ADC_GetValue(hadc);
-        adc_read_status = 1;
+        desire_tem_from_adc = ADC1_Calculate_Desire_Temp(HAL_ADC_GetValue(hadc));
+        irq_flag = 1;
+        // Маємо знову викликати, щоб ADC статус був BUSY
+        HAL_ADC_Start_IT(&adc1_config);
     }
 }
+
+uint32_t ADC1_Calculate_Desire_Temp(uint32_t raw_value) {
+
+    int16_t temp_diff = ADC1_MAX_TEMP_POSSIBLE - ADC1_MIN_TEMP_POSSIBLE;
+
+    desire_tem_from_adc = ADC1_MIN_TEMP_POSSIBLE + ((raw_value * temp_diff) / ADC1_MAX_RAW_VAL);
+    return desire_tem_from_adc;
+}
+uint32_t getADC1_Desire_Temp() {
+    irq_flag = 0;
+    return desire_tem_from_adc;
+}
+ADC_HandleTypeDef* getADC1_HandleTypeDef() {
+    return &adc1_config;
+}
+
+

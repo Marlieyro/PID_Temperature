@@ -20,5 +20,9 @@
 extern TIM_HandleTypeDef tim2_ch2;
 extern TIM_OC_InitTypeDef tim_oc_2;
 
+void pwm1_config();
+TIM_HandleTypeDef* getPWM_HandleTypeDef();
+uint32_t getPWM_Value();
+
 
 #endif //PID_TEMPERATURE_PWM_H

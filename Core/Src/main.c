@@ -23,32 +23,29 @@
 #include <stdio.h>
 #include <string.h>
 
-char word[] = "Temp is: ";
-
-char msg[30];
+PID_Controller pid = {0};
+char msg[64];
 char eow[] = "\r\n";
+volatile uint32_t pwm_val;
+volatile uint32_t temperature;
 
-void SystemClock_Config(void);
+int main(void) {
 
-int main(void)
-{
-  HAL_Init();
-  SystemClock_Config();
-  App_RCC_Configuration();
-  i2c_config();
-  UART1_Config();
-
-  BME280_Init_Config();
+  /** Program SetUp **/
+  Config_System_And_Periphery();
+  PWM_Start();
+  ADC_Start_IT();
+  HAL_Delay(100);
 
   while (1) {
-    // Normal mode BME280 and Blocking reading
-  BME280_Fetch_Sensor_Data();
-  snprintf(msg, sizeof(msg), "%s%d%s", word, (int)get_ptr_BME280_Data_Struct()->temperature, eow);
+    // HAL_Delay(100);
+    //snprintf(msg, sizeof(msg), "ADC is: %d%s", (int)getADC1_HandleTypeDef()->Instance->DR, eow);
+    // HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg), 1000);
 
-  HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg), 1000);
-  HAL_Delay(1000);
+    /** Program LOOP **/
+    HAL_Delay(200);
+    System_Flow();
   }
-
 }
 
 void App_RCC_Configuration() {
@@ -57,6 +54,9 @@ void App_RCC_Configuration() {
   __HAL_RCC_ADC1_CLK_ENABLE();
   __HAL_RCC_USART1_CLK_ENABLE();
   __HAL_RCC_I2C2_CLK_ENABLE();
+  __HAL_RCC_TIM3_CLK_ENABLE();
+  __HAL_RCC_TIM2_CLK_ENABLE();
+
   // Div clock for adc 16 / 8 = 2Mhz
   __HAL_RCC_ADC_CONFIG(RCC_ADCPCLK2_DIV8);
 }
@@ -103,6 +103,66 @@ void Error_Handler(void)
   }
 
 }
+
+void Config_System_And_Periphery(){
+  // Hal Init
+  HAL_Init();
+
+  // RCC Config
+  SystemClock_Config();
+
+  // Enable all clocks for periphery
+  App_RCC_Configuration();
+
+  // UART Config
+  UART1_Config();
+
+  // I2C Config
+  I2C_config();
+
+  // BME280 Config
+  BME280_Init_Config();
+
+  // TIM3 Config for ADC1
+  TIMER3_Config();
+
+  // ADC1 Config
+  ADC1_Config();
+
+  // PWM1 Config
+  pwm1_config();
+
+  // PID Config
+  PID_Init(&pid, 2048, 5, 0);
+}
+
+void PWM_Start() {
+  HAL_TIM_PWM_Start(getPWM_HandleTypeDef(), TIM_CHANNEL_2);
+}
+
+void ADC_Start_IT() {
+  HAL_ADC_Start_IT(getADC1_HandleTypeDef());
+}
+
+void System_Flow() {
+  temperature = BME280_Fetch_and_Get_Data()->temperature;
+
+  // HIL CODE
+  /** static int32_t virtual_temp = 2500;
+  virtual_temp += (pwm_val / 50);
+  if (virtual_temp > 2500) {
+    virtual_temp -= ((virtual_temp - 2500) / 20);
+  }
+  temperature = virtual_temp;
+  **/
+
+  /** Main LOOP **/
+  pwm_val = PID_Compute(&pid, getADC1_Desire_Temp(), temperature);
+  __HAL_TIM_SET_COMPARE(getPWM_HandleTypeDef(), TIM_CHANNEL_2, pwm_val);
+  snprintf(msg, sizeof(msg), "PWM is: %d Temp is: %d CCR is: %d ADC is: %d%s", (int)pwm_val, (int)temperature,(int)__HAL_TIM_GET_COMPARE(getPWM_HandleTypeDef(), TIM_CHANNEL_2), (int)getADC1_Desire_Temp(), eow);
+  HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg), 1000);
+}
+
 #ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
@@ -119,3 +179,20 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
+
+
+
+// 1. Конфіг системи
+// 2. Запуск ШІМ
+// 3. Запуск BME
+// 4. Запуск PID
+
+
+// State Machine
+/**
+ * Запустити вентилятор
+ * Зібрати температуру
+ * Зібрати значення регулювальника
+ * Порахувати PWM
+ * Запустити вентилятор
+ * **/

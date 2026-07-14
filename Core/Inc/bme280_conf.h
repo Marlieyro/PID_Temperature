@@ -19,6 +19,7 @@ struct bme280_settings* get_ptr_BME280_Settings_Struct();
 struct bme280_data* get_ptr_BME280_Data_Struct();
 int8_t BME280_Fetch_Sensor_Data();
 struct bme280_data* BME280_Fetch_and_Get_Data();
+int32_t BME280_Get_Temperature();
 
 static struct bme280_data sensor_data = {0};
 

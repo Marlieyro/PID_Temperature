@@ -199,22 +199,9 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /* USER CODE BEGIN 1 */
-void I2C1_EV_IRQHandler(void) {
-  HAL_I2C_EV_IRQHandler(&i2c_handle);
-}
-
-void I2C1_ER_IRQHandler(void) {
-  HAL_I2C_ER_IRQHandler(&i2c_handle);
-}
-
-// PWM
-void TIM2_IRQHandler(void)
-{
-  HAL_TIM_IRQHandler(&tim2_ch2);
-}
 
 void ADC1_2_IRQHandler(void) {
-  HAL_ADC_IRQHandler(&adc1_config);
+  HAL_ADC_IRQHandler(getADC1_HandleTypeDef());
 }
 
 /* USER CODE END 1 */
